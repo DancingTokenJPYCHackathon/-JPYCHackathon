@@ -14,7 +14,7 @@ window.onload = async function() {
 
 async function initmetamask(){
     if (window.ethereum !== undefined){
-        document.getElementById("message_box").innerHTML = "MetaMask Mobileに接続しました";
+        document.getElementById("message_box").innerHTML = "MetaMask Mobileに接続しました!!";
     } else {
         document.getElementById("message_box").innerHTML = "MetaMask Mobileでこのページを開いてください";        
     }
