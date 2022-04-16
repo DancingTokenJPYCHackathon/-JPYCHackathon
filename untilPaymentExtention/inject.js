@@ -97,13 +97,28 @@ async function init() {
 
     //Input Price
     const input_name = document.createElement("input")
-    input_name.setAttribute("id", "name")
+    input_name.setAttribute("id", "nickname")
     input_name.setAttribute("type", "text")
 
     div1.appendChild(name_label)
     div1.appendChild(input_name)    
     div1.appendChild(return_row)
 
+    //message Label
+    const message_label = document.createElement("label")
+    message_label.setAttribute("id", "messagelabel")
+    message_label.textContent = "応援メッセージをどうぞ！"
+
+    
+    //Input Price
+    const input_message = document.createElement("input")
+    input_message.setAttribute("id", "superchat_message")
+    input_message.setAttribute("type", "text")
+
+    div1.appendChild(message_label)
+    div1.appendChild(input_message)
+    div1.appendChild(return_row)
+    
     //effect Label
     const effect_label = document.createElement("label")
     effect_label.setAttribute("id", "effectlabel")
@@ -140,7 +155,7 @@ async function init() {
     const button = document.createElement("button")
     button.setAttribute("onclick", "JPYCPayment()")
     button.setAttribute("id", "function_button")
-    button.textContent = "connect";
+    button.textContent = "SUPERCHAT!!";
 
     const message_box = document.createElement("h3")
     message_box.setAttribute("id", "message_box")

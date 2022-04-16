@@ -15,7 +15,7 @@ window.onload = async function() {
     initmetamask();
 }
 
-
+//metamask 呼び出し
 async function initmetamask(){
     if (window.ethereum !== undefined){
         document.getElementById("message_box").innerHTML = "MetaMask Mobileに接続しました";
@@ -33,18 +33,20 @@ async function initmetamask(){
 
 let a;
 
-async function TokenPayment(){
-    shopwalletaddress = document.getElementById("walletaddress").value;
-    pricing = document.getElementById("superchat_price").value;
-    document.getElementById("message_box").innerHTML = "ボタンが押されました。お支払いを開始します";
-    let options = { gasPrice: 10000000000 , gasLimit: 100000};
-    const jpycprice = ethers.utils.parseUnits( pricing.toString() , 18);
-    jpyccontract.transfer(  shopwalletaddress, jpycprice , options ).catch((error) => {
-    a=error;
-    document.getElementById("message_box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
-    });
-}
+//指定した値のJPYCをお支払い
+// async function TokenPayment(){
+//     shopwalletaddress = document.getElementById("walletaddress").value;
+//     pricing = document.getElementById("superchat_price").value;
+//     document.getElementById("message_box").innerHTML = "ボタンが押されました。お支払いを開始します";
+//     let options = { gasPrice: 10000000000 , gasLimit: 100000};
+//     const jpycprice = ethers.utils.parseUnits( pricing.toString() , 18);
+//     jpyccontract.transfer(  shopwalletaddress, jpycprice , options ).catch((error) => {
+//     a=error;
+//     document.getElementById("message_box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+//     });
+// }
 
+//RinkebyNetworkへ切り替え
 async function changeToMatic(){
     document.getElementById("message_box").innerHTML = "Rinkeby Networkに切り替えましょう";
     let ethereum = window.ethereum;
@@ -55,6 +57,7 @@ async function changeToMatic(){
     document.getElementById("message_box").innerHTML = "準備ができました。お支払いボタンを押すと、お支払いできます<br><br>"
 }
 
+
 async function JPYCPayment(){
     const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
     const JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
@@ -63,10 +66,9 @@ async function JPYCPayment(){
     const youtuberaddress = document.getElementById("walletaddress").value;
     const jpycprice = document.getElementById("superchat_price").value;
     let options = { gasPrice: 10000000000 , gasLimit: 100000};
-    // const jpycprice = ethers.utils.parseUnits( pricing.toString() , 18);
-    // youtubermessage = document.getElementById("message").value; //ここは作る
-    const youtubermessage  = "hello";
-    const nickname = "hello";
+ 
+    const youtubermessage  = document.getElementById("superchat_message").value;
+    const nickname = document.getElementById("nickname").value;
 
     //イベント情報をフィルターして、Receiver に送る
     filter = JPYCContract.filters.MoneySent(null, null, null, null, null);
