@@ -4,17 +4,7 @@ let signer;
 let tmcontract;
 
 window.onload = async function() {
-    if (window.ethereum) {
       startup();
-    } else {
-      window.addEventListener('ethereum#initialized', handleEthereum, {
-        once: true,
-    });
-
-    // If the event is not dispatched by the end of the timeout,
-    // the user probably doesn't have MetaMask installed.
-    setTimeout(handleEthereum, 3000); // 3 seconds
-}
 }
 
 async function startup() {
