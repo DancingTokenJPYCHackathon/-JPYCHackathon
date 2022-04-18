@@ -4,13 +4,30 @@ let signer;
 let tmcontract;
 
 window.onload = async function() {
+      startup();
+}
+
+async function startup() {
     ethereum.on('chainChanged', (_chainId) => window.location.reload());
     changeToRinkeby();
 
     initmetamask();
-
 }
 
+/**
+// 送金額に応じてスタイルシートを返す関数
+function addStyleFromAmount(_amount, messageId){
+    	const chatStyleSheet = "";
+
+	if (_amount) {
+		// 送金額に応じて異なるチャットボックスのスタイルシートを決定
+	} else {
+		// 送金額に応じて異なるチャットボックスのスタイルシートを決定
+	}
+
+	return chatStyleSheet;
+}
+**/
 
 async function initmetamask(){
     if (window.ethereum !== undefined){
@@ -24,7 +41,18 @@ async function initmetamask(){
     useraddress = await signer.getAddress();    
     tmcontract = await new ethers.Contract(throwMoneyContract, abi, signer);
     filter = tmcontract.filters.MoneySent(null, useraddress, null, null, null);
+    chat_counter = 0;
+
     tmcontract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
+	    const messageId =  `chat_message_ ${ chat_counter }`;
+            //const chatStyleSheet = addStyleFromAmount(_amount, messageId);
+
+	    const chat_message = document.createElement("div");
+	    chat_message.setAttribute("id", "chat_message");
+	    chat_message.setAttribute("class", messageId);
+	    chat_message.innerHTML = _message;
+	    document.getElementById("chat_box").appendChild(chat_message);
+
             console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
     });
 }
@@ -37,5 +65,5 @@ async function changeToRinkeby(){
             chainId: '0x4',
         }]
     const tx = await ethereum.request({method: 'wallet_switchEthereumChain', params:data}).catch()
-    document.getElementById("message_box").innerHTML = "準備ができました。お支払いボタンを押すと、お支払いできます<br><br>"
+    document.getElementById("message_box").innerHTML = "ウォレットとの連携が完了しました。<br><br>"
 }
