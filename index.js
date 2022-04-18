@@ -11,7 +11,7 @@ async function startup() {
     ethereum.on('chainChanged', (_chainId) => window.location.reload());
     changeToRinkeby();
 
-    initmetamask();
+    //initmetamask();
 }
 
 /**
@@ -30,22 +30,22 @@ function addStyleFromAmount(_amount, messageId){
 **/
 
 async function initmetamask(){
-    if (window.ethereum !== undefined){
-        document.getElementById("message_box").innerHTML = "MetaMask Mobileに接続しました!!";
-    } else {
-        document.getElementById("message_box").innerHTML = "MetaMask Mobileでこのページを開いてください";        
-    }
-    provider = await new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = await provider.getSigner();
-    useraddress = await signer.getAddress();    
-    tmcontract = await new ethers.Contract(throwMoneyContract, abi, signer);
+    document.getElementById("message_box").innerHTML = "配信開始しました！";
+    //provider = await new ethers.providers.Web3Provider(window.ethereum);
+    //await provider.send("eth_requestAccounts", []);
+    //signer = await provider.getSigner();
+    //useraddress = await signer.getAddress();    
+    //useraddress = "0x7a6C738D8c6936A7b9EDcf11c3fF7284624AA876";
+    const provider = await ethers.getDefaultProvider("rinkeby", {etherscan: "KAAQMZSEM8PAUDKX7BP26EAEM85A7SG5G6"});
+    useraddress = document.getElementById("wallet_address_input").value;    
+    tmcontract = await new ethers.Contract(throwMoneyContract, abi, provider);
     filter = tmcontract.filters.MoneySent(null, useraddress, null, null, null);
     chat_counter = 0;
 
     tmcontract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
-	    const messageId =  `chat_message_ ${ chat_counter }`;
+	    const messageId =  `chat_message_${ chat_counter }`;
             //const chatStyleSheet = addStyleFromAmount(_amount, messageId);
+	    chat_counter += 1;
 
 	    const chat_message = document.createElement("div");
 	    chat_message.setAttribute("id", "chat_message");
