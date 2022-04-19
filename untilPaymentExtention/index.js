@@ -59,34 +59,44 @@ async function changeToMatic(){
 
 
 async function JPYCPayment(){
-    const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
-    const JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
+    const OSHAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
+    const OSHContract = new ethers.Contract(OSHAddress, abi_contract, signer);
 
     // 投げ銭のスマコン
     const youtuberaddress = document.getElementById("walletaddress").value;
-    const jpycprice = document.getElementById("superchat_price").value;
+    const JPYCPrice = document.getElementById("superchat_price").value;
     let options = { gasPrice: 10000000000 , gasLimit: 100000};
  
     const youtubermessage  = document.getElementById("superchat_message").value;
     const nickname = document.getElementById("nickname").value;
 
     //イベント情報をフィルターして、Receiver に送る
-    filter = JPYCContract.filters.MoneySent(null, null, null, null, null);
-    JPYCContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
+    filter = OSHContract.filters.MoneySent(null, null, null, null, null);
+    OSHContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
                 console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
     document.getElementById("message_box").innerHTML = "送信成功！"
         }); 
     
+    //じぶんのアドレスにきた全てのイベント情報を参照する
+    useraddress = "0x216317a44771b7C71a182f2b0b52786c3Ca3Ef30"  //記入
+    filter = OSHContract.filters.MoneySent(null, useraddress, null, null, null);
+    pastFilter = OSHContract.queryFilter(filter, 10473119, 11473119); // 処理が激重　//blocknumber は変える必要がある
+    await OSHContract.queryFilter(filter, 10473119, 10673119);
 
-    filter = JPYCContract.filters.ErrorLog();
-    JPYCContract.on(filter, (_message) => {
+    OSHContract.on(pastFilter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
+            console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
+    }); 
+    
+
+    filter = OSHContract.filters.ErrorLog();
+    OSHContract.on(filter, (_message) => {
                 console.log(`I got ${ _message }`);
     document.getElementById("message_box").innerHTML = "送信失敗！"
         }); 
     
 
     //SendJpyc
-    JPYCContract.sendJpyc(  youtuberaddress, youtubermessage, nickname, jpycprice, options).catch((error) => {
+    OSHContract.sendJpyc(  youtuberaddress, youtubermessage, nickname, JPYCPrice, options).catch((error) => {
     a=error;
     document.getElementById("message_box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
     });
