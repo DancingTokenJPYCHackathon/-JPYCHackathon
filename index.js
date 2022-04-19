@@ -43,16 +43,37 @@ async function initmetamask(){
     chat_counter = 0;
 
     tmcontract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
-	    const messageId =  `chat_message_${ chat_counter }`;
+	    const chatId =  `chat_message_${ chat_counter }`;
+	    // 入金額によってスタイルを変更
             //const chatStyleSheet = addStyleFromAmount(_amount, messageId);
 	    chat_counter += 1;
 
+	    // #chat_box に追加する div 要素, スマコンからのイベントデータを入れる
+	    const chat = document.createElement("div");
+	    chat.setAttribute("id", "chat");
+	    chat.setAttribute("class", chatId);
+
+	    // ニックネームを入れる div
+	    const chat_alias = document.createElement("div");
+	    chat_alias.setAttribute("id", "chat_alias");
+	    chat_alias.innerHTML = _alias;
+	    chat.appendChild(chat_alias);
+
+	    // 入金額を入れる div
+	    const chat_amount = document.createElement("div");
+	    chat_amount.setAttribute("id", "chat_amount");
+	    chat_amount.innerHTML = _amount;
+	    chat.appendChild(chat_amount);
+
+	    // メッセージを入れる div
 	    const chat_message = document.createElement("div");
 	    chat_message.setAttribute("id", "chat_message");
-	    chat_message.setAttribute("class", messageId);
 	    chat_message.innerHTML = _message;
-	    document.getElementById("chat_box").appendChild(chat_message);
+	    chat.appendChild(chat_message);
 
+	    document.getElementById("chat_box").appendChild(chat);
+
+	    // デバッグ用ログ
             console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
     });
 }
