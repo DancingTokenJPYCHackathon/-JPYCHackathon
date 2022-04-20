@@ -9,7 +9,7 @@
         }
     ],
     "web_accessible_resources": [{
-      "resources": ["ether.js", "SETTING.js", "abi_JPYC.js", "index.js", "abi_contract.js", "smartcontract.js"],
+      "resources": ["ether.js", "SETTING.js", "abi_JPYC.js", "abi_throwmoneyfactory.js", "index.js", "abi_contract.js", "smartcontract.js"],
       "matches": ["<all_urls>"]
     }],
     "host_permissions": ["<all_urls>"]

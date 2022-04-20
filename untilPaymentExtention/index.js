@@ -3,6 +3,9 @@ let provider;
 let signer;
 let jpyccontract;
 let shopwalletaddress;
+let FactoryAddress;
+let FactoryContract;
+let signerPOOL;
 
 window.onload = async function() {
     ethereum.on('chainChanged', (_chainId) => window.location.reload());
@@ -29,11 +32,31 @@ async function initmetamask(){
     jpyccontract = await new ethers.Contract( jpyc_on_rinkeby , abi_JPYC, signer );
     balance = await jpyccontract.balanceOf(useraddress) * 10e-19;
     document.getElementById("message_box").innerHTML = document.getElementById("message_box").innerHTML + balance + "JPYC持っています";
+    
+    FactoryAddress = "0x0Dfd08e486EB61EB76A3015EF77B6a9Ec220AA9E"
+    FactoryContract = new ethers.Contract(FactoryAddress, abi_throwmoneyfactory, signer);
+    signerPOOL = await FactoryContract.getPool(await signer.getAddress());
+    if (signerPOOL === '0x0000000000000000000000000000000000000000') {
+        document.getElementById("pool_button").textContent = "POOLを作成";
+        document.getElementById("pool_button").setAttribute("onclick", "createPOOL()");
+    };
 }
 
 let a;
 
-//指定した値のJPYCをお支払い
+//POOL作成
+async function createPOOL(){
+    FactoryContract.newThrowMoneyPool().then(async (_signerPOOL) => {
+        signerPOOL = _signerPOOL;
+        console.log(signerPOOL);
+        if (signerPOOL !== '0x0000000000000000000000000000000000000000') {
+            document.getElementById("pool_button").textContent = "入金する";
+            document.getElementById("pool_button").setAttribute("onclick", "JPYCPOOL()");
+        }
+});
+}
+
+// //指定した値のJPYCをお支払い
 // async function TokenPayment(){
 //     shopwalletaddress = document.getElementById("walletaddress").value;
 //     pricing = document.getElementById("superchat_price").value;
@@ -58,9 +81,44 @@ async function changeToMatic(){
 }
 
 
+//POOLへの入金動作    
+async function JPYCPOOL(POOLAddress){    
+    POOLContract = new ethers.Contract(POOLAddress, abi_contract, signer);
+
+    pricing = document.getElementById("superchat_price").value;
+    const poolprice = ethers.utils.parseUnits( pricing.toString() , 18);
+    let options = { gasPrice: 10000000000 , gasLimit: 100000};
+    
+    jpyccontract.transfer(  POOLAddress, poolprice , options ).catch((error) => {
+            a=error;
+            document.getElementById("message_box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+            });
+    };
+
+//入金ボタンを推した時に発生する動作
+
+  
+
+// //POOLからの出金 未展開
+// async function extractPOOL(){    
+//     POOL2Address = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
+//     POOL2Contract = new ethers.Contract(POOL2Address, abi_contract, signer);
+//     pricing2 = document.getElementById("superchat_price").value;
+//     const poolprice2 = ethers.utils.parseUnits( pricing2.toString() , 18);
+//     let options = { gasPrice: 10000000000 , gasLimit: 100000};
+    
+//     jpyccontract.transfer(  POOL2Address, poolprice2 , options ).catch((error) => {
+//             a=error;
+//             document.getElementById("message_box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+//             });
+//     };
+
+
+
+
 async function JPYCPayment(){
-    const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
-    const JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
+    JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
+    JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
 
     // 投げ銭のスマコン
     const youtuberaddress = document.getElementById("walletaddress").value;
@@ -95,4 +153,3 @@ async function JPYCPayment(){
 
     
 }
-

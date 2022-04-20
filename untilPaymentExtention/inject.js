@@ -45,6 +45,9 @@ async function init() {
     el7.setAttribute("src", chrome.runtime.getURL("smartcontract.js"))
     document.body.appendChild(el7)
 
+    const el8 = document.createElement("script")
+    el8.setAttribute("src", chrome.runtime.getURL("abi_throwmoneyfactory.js"))
+    document.body.appendChild(el8)
 
 
 
@@ -162,6 +165,24 @@ async function init() {
 
     div1.appendChild(message_box)
     div1.appendChild(button)
+
+    //Button for 入金
+    const button2 = document.createElement("button")
+    button2.setAttribute("onclick", "POOLBUTTON()")
+    button2.setAttribute("id", "pool_button")
+    button2.textContent = "入金する！！";
+    
+    div1.appendChild(button2)
+
+    // //Button for 出金
+    // const button3 = document.createElement("button")
+    // button3.setAttribute("onclick", "extractPOOL()")
+    // button3.setAttribute("id", "extract_button")
+    // button3.textContent = "出金!!";
+        
+    // div1.appendChild(button3)
+        
+    
 
     document.body.appendChild(style)
     document.body.appendChild(div1)
