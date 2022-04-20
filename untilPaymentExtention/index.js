@@ -7,7 +7,8 @@ let signerPool;
 
 const jpyc_on_rinkeby = "0xbD9c419003A36F187DAf1273FCe184e1341362C0";
 const nullAddress = "0x0000000000000000000000000000000000000000";
-const throwMoneyFactoryAddress = "0x0Dfd08e486EB61EB76A3015EF77B6a9Ec220AA9E";
+//const throwMoneyFactoryAddress = "0x0Dfd08e486EB61EB76A3015EF77B6a9Ec220AA9E";
+const throwMoneyFactoryAddress = "0xceb79363b0125819e172408376ea4Fad65c1ecb2";
 const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
 
 
@@ -44,10 +45,9 @@ let a;
 
 //Pool作成
 async function createPool(){
-    //filter = throwMoneyFactoryContract.filters.PoolCreated(useraddress, null, null);
-    filter = throwMoneyFactoryContract.filters.PoolCreated(null, null);
+    filter = throwMoneyFactoryContract.filters.PoolCreated(useraddress, null);
     throwMoneyFactoryContract.on(filter, (_signer_address, _pool_address) => {
-        signerPool = _signer_address;
+        signerPool = _pool_address;
         console.log(signerPool);
         if (signerPool !== nullAddress) {
             document.getElementById("pool_button").textContent = "入金する";

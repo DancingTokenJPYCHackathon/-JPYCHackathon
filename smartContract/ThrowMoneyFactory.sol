@@ -8,7 +8,7 @@ contract ThrowMoneyFactory {
 
     // イベント
     event ErrorLog(string __error_message);
-    event PoolCreated(ThrowMoneyPool __pool_address, uint __pool_balance);
+    event PoolCreated(address indexed __sender_address, ThrowMoneyPool __pool_address);
 
     function getPool(address _sender) public view returns(ThrowMoneyPool) {
         return pools[_sender];
@@ -18,7 +18,7 @@ contract ThrowMoneyFactory {
         require(address(pools[msg.sender]) == address(0), "Pool already created for this wallet address");
         // 新しいプールを作成
         ThrowMoneyPool pool = new ThrowMoneyPool(msg.sender);
-        emit PoolCreated(pool, pool.jpycAmount());
+        emit PoolCreated(msg.sender, pool);
 
         pools[msg.sender] = pool;
 
