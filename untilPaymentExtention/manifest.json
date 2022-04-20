@@ -5,11 +5,12 @@
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
-            "js": ["inject.js"]
+            "js": ["inject.js"],
+            "css": ["./views/style.min.css"]
         }
     ],
     "web_accessible_resources": [{
-      "resources": ["ether.js", "SETTING.js", "abi_JPYC.js", "index.js", "abi_contract.js", "smartcontract.js"],
+      "resources": ["ether.js", "SETTING.js", "abi_JPYC.js", "index.js", "abi_contract.js", "smartcontract.js", "views/setting.html", "img/oshi-icon.png"],
       "matches": ["<all_urls>"]
     }],
     "host_permissions": ["<all_urls>"]
