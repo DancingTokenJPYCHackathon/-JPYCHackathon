@@ -1,6 +1,7 @@
 
-//お店のアドレス
-// shopwalletaddress = "0x7a6C738D8c6936A7b9EDcf11c3fF7284624AA876";
+//スマコンアドレス
+// JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
+// JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
 
 //お値段(JPYC)
 //pricing = 5;
