@@ -7,8 +7,8 @@ let signerPool;
 
 const jpyc_on_rinkeby = "0xbD9c419003A36F187DAf1273FCe184e1341362C0";
 const nullAddress = "0x0000000000000000000000000000000000000000";
-//const throwMoneyFactoryAddress = "0x0Dfd08e486EB61EB76A3015EF77B6a9Ec220AA9E";
-const throwMoneyFactoryAddress = "0xceb79363b0125819e172408376ea4Fad65c1ecb2";
+//const throwMoneyFactoryAddress = "0xceb79363b0125819e172408376ea4Fad65c1ecb2";
+const throwMoneyFactoryAddress = "0x85841E40736Feb76de69DDA89e05760c4aB54E28";
 const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
 
 
@@ -29,7 +29,7 @@ async function initmetamask(){
     await provider.send("eth_requestAccounts", []);
     signer = await provider.getSigner();
     useraddress = await signer.getAddress();    
-    JPYCContract = await new ethers.Contract( jpyc_on_rinkeby , abi_JPYC, signer );
+    JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
     balance = await JPYCContract.balanceOf(useraddress) * 10e-19;
     document.getElementById("message-box").innerHTML = document.getElementById("message-box").innerHTML + balance + "JPYC持っています";
     
@@ -75,15 +75,16 @@ async function changeToMatic(){
 async function JPYCPool(){    
     PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
 
-    pricing = document.getElementById("OSH-pool-amount").value;
-    const poolprice = ethers.utils.parseUnits( pricing.toString() , 18);
+    poolAmountEther = document.getElementById("OSH-pool-amount").value;
+    const poolAmountWei = ethers.utils.parseUnits(poolAmountEther.toString(), 18);
     let options = { gasPrice: 10000000000 , gasLimit: 100000};
     
-    JPYCContract.transfer(PoolAddress, poolprice, options ).catch((error) => {
+    JPYCContract.transfer(signerPool, poolAmountWei, options).catch((error) => {
             a=error;
             document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
             });
-    };
+    // Update pool amount on DOM
+};
 
 //入金ボタンを推した時に発生する動作
 
@@ -107,32 +108,32 @@ async function JPYCPool(){
 
 
 async function JPYCPayment(){
-    JPYCContract = new ethers.Contract(JPYCAddress, abi_contract, signer);
+    PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
 
     // 投げ銭のスマコン
     const streamerAddress = document.getElementById("OSH-wallet-address").value;
-    const amount = document.getElementById("OSH-throw-amount").value;
-    let options = { gasPrice: 10000000000 , gasLimit: 100000};
+    const amountWei = ethers.utils.parseUnits(document.getElementById("OSH-throw-amount").value.toString(), 18);
+    let options = { gasPrice: 1000000 , gasLimit: 100000};
  
     const message  = document.getElementById("OSH-throw-message").value;
     const nickname = document.getElementById("OSH-nickname").value;
 
     //イベント情報をフィルターして、Receiver に送る
-    filter = JPYCContract.filters.MoneySent(null, null, null, null, null);
-    JPYCContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
-            console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
+    filter = PoolContract.filters.MoneySent(null, null, null, null, null);
+    PoolContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amountWei) => {
+            console.log(`I got ${ ethers.utils.formatEther(_amountWei) } JPYC from ${ _alias } saying ${ _message }`);
             document.getElementById("message-box").innerHTML = "送信成功！";
         }); 
 
-    filter = JPYCContract.filters.ErrorLog();
-    JPYCContract.on(filter, (_message) => {
+    filter = PoolContract.filters.ErrorLog();
+    PoolContract.on(filter, (_message) => {
                 console.log(`I got ${ _message }`);
                 document.getElementById("message-box").innerHTML = "送信失敗！";
         }); 
     
 
     //SendJpyc
-    JPYCContract.sendJpyc(streamerAddress, message, nickname, amount, options).catch((error) => {
+    PoolContract.sendJpyc(streamerAddress, message, nickname, amountWei, options).catch((error) => {
         a=error;
         document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
     });
