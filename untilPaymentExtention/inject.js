@@ -30,21 +30,16 @@ async function init() {
     document.body.appendChild(el3)
 
     const el4 = document.createElement("script")
-    el4.setAttribute("src", chrome.runtime.getURL("abi_JPYC.js"))
+    el4.setAttribute("src", chrome.runtime.getURL("./abi/abi_JPYC.js"))
     document.body.appendChild(el4)
 
-    const el5 = document.createElement("script")
-    el5.setAttribute("src", chrome.runtime.getURL("SETTING.js"))
-    document.body.appendChild(el5)
-
     const el6 = document.createElement("script")
-    el6.setAttribute("src", chrome.runtime.getURL("abi_contract.js"))
+    el6.setAttribute("src", chrome.runtime.getURL("./abi/abi_contract.js"))
     document.body.appendChild(el6)
 
-    const el7 = document.createElement("script")
-    el7.setAttribute("src", chrome.runtime.getURL("smartcontract.js"))
-    document.body.appendChild(el7)
-
+    const el8 = document.createElement("script")
+    el8.setAttribute("src", chrome.runtime.getURL("./abi/abi_throwmoneyfactory.js"))
+    document.body.appendChild(el8)
 
 
 
@@ -162,6 +157,24 @@ async function init() {
 
     div1.appendChild(message_box)
     div1.appendChild(button)
+
+    //Button for 入金
+    const button2 = document.createElement("button")
+    button2.setAttribute("onclick", "")
+    button2.setAttribute("id", "pool_button")
+    button2.textContent = "入金する！！";
+    
+    div1.appendChild(button2)
+
+    // //Button for 出金
+    // const button3 = document.createElement("button")
+    // button3.setAttribute("onclick", "extractPOOL()")
+    // button3.setAttribute("id", "extract_button")
+    // button3.textContent = "出金!!";
+        
+    // div1.appendChild(button3)
+        
+    
 
     document.body.appendChild(style)
     document.body.appendChild(div1)

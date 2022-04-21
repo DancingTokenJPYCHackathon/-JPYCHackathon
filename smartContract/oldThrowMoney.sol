@@ -1,7 +1,3 @@
-floating UI
-https://github.com/liorgrossman/darkness/blob/47a4498b65f591642402d56ee1cfc5d25cf23a76/chrome-extension/js/page.js#L185
-
-Ether.js 部分
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
