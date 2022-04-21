@@ -5,11 +5,12 @@
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
-            "js": ["inject.js"]
+            "js": ["inject.js"],
+            "css": ["./views/style.min.css"]
         }
     ],
     "web_accessible_resources": [{
-      "resources": ["ether.js", "abi/abi_JPYC.js", "abi/abi_throwmoneyfactory.js", "index.js", "abi/abi_contract.js"],
+      "resources": ["ether.js", "abi/abi_JPYC.js", "abi/abi_throwmoneyfactory.js", "index.js", "abi/abi_contract.js", "img/oshi-icon.png"],
       "matches": ["<all_urls>"]
     }],
     "host_permissions": ["<all_urls>"]

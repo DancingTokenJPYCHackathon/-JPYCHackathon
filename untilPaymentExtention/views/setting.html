@@ -1,0 +1,69 @@
+<div class="oshi-settings">
+    
+    <!-- toolbar -->
+    <div class="oshi-toolbar">
+        <div class="oshi-app-title">
+            <div class="oshi-app-logo">
+                <img class="oshi-icon" src="../img/oshi-icon.png" alt="">
+            </div>
+            <span class="oshi-app-name">OSHI サポ !</span>
+        </div>
+        <span class="oshi-app-close"
+        onclick="document.querySelector('.oshi-settings').classList.toggle('visible')"
+        ></span>
+    </div>
+
+    <!-- balance -->
+    <section class="balance l-section">
+        <div class="balance-item">
+            <h4 class="balance-item__title">Wallet 残高</h4>
+            <!-- 値段 -->
+            <span></span>
+        </div>
+        <div class="balance-item">
+            <h4 class="balance-item__title">Pool 残高</h4>
+            <!-- 値段 -->
+            <span></span>
+        </div>
+    </section>
+
+    <!-- main content -->
+    <form class="oshi-form l-section" id="oshi-content">
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">OSHI相手のWalletアドレス</p>
+            <input class="oshi-form-item__input" type="text" name="" id="" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">いくら送りますか？</p>
+            <input class="oshi-form-item__input" type="number" name="" id="" placeholder="JPYC" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">あなたのニックネーム</p>
+            <input class="oshi-form-item__input" type="text" name="" id="" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">応援メッセージをどうぞ！</p>
+            <input class="oshi-form-item__input" type="text" name="" id="">
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label" id="">エフェクト</p>
+            <select class="oshi-form-item__input" name="" id="">
+                <option value="a">キラキラ</option>
+                <option value="b">うさみみ</option>
+                <option value="c">NFT</option>
+            </select>
+        </div>
+
+        <!-- submit button -->
+        <button class="oshi-btn">
+            OSHU !!
+        </button>
+    </form>
+</div>
+
+<!-- icon button -->
+<div class="oshi_settings_icon" id="oshi_settings_icon"
+onclick="document.querySelector('.oshi-settings').classList.toggle('visible')"
+>
+    <img class="oshi-icon" src="img/oshi-icon.png" alt="">
+</div>
