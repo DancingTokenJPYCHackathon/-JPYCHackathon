@@ -1,24 +1,9 @@
 async function init() {
     // Add css to floating component
-    const style = document.createElement("style")
-    style.setAttribute("id", "inject-floating")
-    style.setAttribute("type", "text/css")
-    style.textContent = `
-    #floating {
-    z-index: 2147400000 !important;
-    width: 200px;
-    color: black;
-    position: fixed;
-    left: 10px;
-    top: 10px;
-    background-color: indianred;
-    }
-
-    h3#message {
-    font-size: 20px !important;
-    }
-    `;
-    document.head.appendChild(style)
+    const link = document.createElement("link");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("href", chrome.runtime.getURL("./views/style.min.css"));
+    document.head.appendChild(link)
 
     // Inject our javascript to page
     const el2 = document.createElement("script")
@@ -45,142 +30,94 @@ async function init() {
 
     // Inject HTML of floating component
     const div1 = document.createElement("div")
-    div1.setAttribute("id", "floating")
-
-    //Form Label
-    const form_label = document.createElement("label")
-    form_label.setAttribute("id", "formlabel")
-    form_label.textContent = "YoutuberのWalletアドレス"
-
-    // const form_pay = document.createElement("form")
-    // form_pay.setAttribute("id", "formforpay")
-    
-    //改行エレメント
-    const return_row = document.createElement("br")
-
-
-    //Input Wallet Address
-    const input_address = document.createElement("input")
-    input_address.setAttribute("id", "walletaddress")
-    input_address.setAttribute("type", "text")
-    input_address.appendChild(return_row)
-
-    // formforpay.appendChild(input_address)
-    div1.appendChild(form_label)
-    div1.appendChild(input_address)
-
-    //Price Label
-    const price_label = document.createElement("label")
-    price_label.setAttribute("id", "pricelabel")
-    price_label.textContent = "JPYC をいくら送りますか？"
-
-    
-    //Input Price
-    const input_price = document.createElement("input")
-    input_price.setAttribute("id", "superchat_price")
-    input_price.setAttribute("type", "text")
-
-    div1.appendChild(price_label)
-    div1.appendChild(input_price)
-    div1.appendChild(return_row)
-    
-
-    //nickname Label
-    const name_label = document.createElement("label")
-    name_label.setAttribute("id", "namelabel")
-    name_label.textContent = "あなたのニックネーム"
-
-    //Input Price
-    const input_name = document.createElement("input")
-    input_name.setAttribute("id", "nickname")
-    input_name.setAttribute("type", "text")
-
-    div1.appendChild(name_label)
-    div1.appendChild(input_name)    
-    div1.appendChild(return_row)
-
-    //message Label
-    const message_label = document.createElement("label")
-    message_label.setAttribute("id", "messagelabel")
-    message_label.textContent = "応援メッセージをどうぞ！"
-
-    
-    //Input Price
-    const input_message = document.createElement("input")
-    input_message.setAttribute("id", "superchat_message")
-    input_message.setAttribute("type", "text")
-
-    div1.appendChild(message_label)
-    div1.appendChild(input_message)
-    div1.appendChild(return_row)
-    
-    //effect Label
-    const effect_label = document.createElement("label")
-    effect_label.setAttribute("id", "effectlabel")
-    effect_label.textContent = "エフェクト"
-
-    //Input effect
-    const input_effect = document.createElement("select")
-    input_effect.setAttribute("id", "effect")
-    input_effect.setAttribute("size", "1")
-
-    const optionA = document.createElement("option")
-    optionA.setAttribute("value", "A")
-    optionA.textContent = "キラキラ"
-    input_effect.appendChild(optionA)
-
-    const optionB = document.createElement("option")
-    optionB.setAttribute("value", "B")
-    optionB.textContent = "うさ耳"
-    input_effect.appendChild(optionB)
-
-    const optionC = document.createElement("option")
-    optionC.setAttribute("value", "C")
-    optionC.textContent = "NFT"
-    input_effect.appendChild(optionC)
-
-
-
-    div1.appendChild(effect_label)
-    div1.appendChild(input_effect)    
-    div1.appendChild(return_row)
-
-
-    // Button for payment
-    const button = document.createElement("button")
-    button.setAttribute("onclick", "JPYCPayment()")
-    button.setAttribute("id", "function_button")
-    button.textContent = "SUPERCHAT!!";
-
-    const message_box = document.createElement("h3")
-    message_box.setAttribute("id", "message_box")
-
-    div1.appendChild(message_box)
-    div1.appendChild(button)
-
-    //Button for 入金
-    const button2 = document.createElement("button")
-    button2.setAttribute("onclick", "")
-    button2.setAttribute("id", "pool_button")
-    button2.textContent = "入金する！！";
-    
-    div1.appendChild(button2)
-
-    // //Button for 出金
-    // const button3 = document.createElement("button")
-    // button3.setAttribute("onclick", "extractPOOL()")
-    // button3.setAttribute("id", "extract_button")
-    // button3.textContent = "出金!!";
-        
-    // div1.appendChild(button3)
-        
-    
-
-    document.body.appendChild(style)
-    document.body.appendChild(div1)
+    div1.innerHTML = settings_html;
+    document.body.appendChild(div1);
 
 
 
 }
+
+settings_html = `<div class="oshi-settings">
+    
+    <!-- toolbar -->
+    <div class="oshi-toolbar">
+        <div class="oshi-app-title">
+            <div class="oshi-app-logo">
+                <img class="oshi-icon" src=${ chrome.runtime.getURL("./img/oshi-icon.png") } alt="">
+            </div>
+            <span class="oshi-app-name">OSHI サポ !</span>
+        </div>
+        <span class="oshi-app-close"
+        onclick="document.querySelector('.oshi-settings').classList.toggle('visible')"
+        ></span>
+    </div>
+
+    <!-- balance -->
+    <section class="balance l-section">
+        <div class="balance-item">
+            <h4 class="balance-item__title">Wallet 残高</h4>
+            <!-- 値段 -->
+            <span></span>
+        </div>
+        <div class="balance-item">
+            <h4 class="balance-item__title">Pool 残高</h4>
+            <!-- 値段 -->
+            <span></span>
+        </div>
+        <div class="balance-item">
+            <p class="balance-item__label">いくら送りますか？</p>
+            <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="JPYC" required>
+        </div>
+
+        <!-- submit button -->
+        <button class="balance-btn" id="OSH-pool-button" onclick="JPYCPool()">
+            入金
+        </button>
+    </section>
+
+    <!-- main content -->
+    <form class="oshi-form l-section" id="oshi-content">
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">OSHI相手のWalletアドレス</p>
+            <input class="oshi-form-item__input" type="text" name="" id="OSH-wallet-address" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">いくら送りますか？</p>
+            <input class="oshi-form-item__input" type="number" name="" id="OSH-throw-amount" placeholder="JPYC" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">あなたのニックネーム</p>
+            <input class="oshi-form-item__input" type="text" name="" id="OSH-nickname" required>
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label">応援メッセージをどうぞ！</p>
+            <input class="oshi-form-item__input" type="text" name="" id="OSH-throw-message">
+        </div>
+        <div class="oshi-form-item">
+            <p class="oshi-form-item__label" id="">エフェクト</p>
+            <select class="oshi-form-item__input" name="" id="">
+                <option value="a">キラキラ</option>
+                <option value="b">うさみみ</option>
+                <option value="c">NFT</option>
+            </select>
+        </div>
+
+        <!-- submit button -->
+        <button class="oshi-btn" onclick="JPYCPayment()">
+            OSHU !!
+        </button>
+	<!-- message box (debug purposes only) -->
+        <div id="message-box">
+        </div>
+    </form>
+</div>
+
+<!-- icon button -->
+<div class="oshi_settings_icon" id="oshi_settings_icon"
+onclick="document.querySelector('.oshi-settings').classList.toggle('visible')"
+>
+    <img class="oshi-icon" src=${ chrome.runtime.getURL("./img/oshi-icon.png")} alt="">
+</div>
+`
 
 init()

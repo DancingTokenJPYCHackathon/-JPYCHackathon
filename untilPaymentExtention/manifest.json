@@ -10,7 +10,7 @@
         }
     ],
     "web_accessible_resources": [{
-      "resources": ["ether.js", "abi/abi_JPYC.js", "abi/abi_throwmoneyfactory.js", "index.js", "abi/abi_contract.js", "img/oshi-icon.png"],
+      "resources": ["ether.js", "abi/abi_JPYC.js", "abi/abi_throwmoneyfactory.js", "index.js", "abi/abi_contract.js", "img/oshi-icon.png", "views/style.min.css"],
       "matches": ["<all_urls>"]
     }],
     "host_permissions": ["<all_urls>"]
