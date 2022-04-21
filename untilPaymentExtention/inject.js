@@ -70,7 +70,7 @@ settings_html = `<div class="oshi-settings">
         </div>
 
         <!-- submit button -->
-        <button class="balance-btn" id="OSH-pool-button" onclick="JPYCPool()">
+        <button class="oshi-btn" id="OSH-pool-button" onclick="JPYCPool()">
             入金
         </button>
     </section>
