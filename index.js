@@ -1,7 +1,8 @@
 let useraddress;
 let provider;
 let signer;
-let tmcontract;
+let throwMoneyFactoryContract;
+const throwMoneyFactoryAddress = "0x85841E40736Feb76de69DDA89e05760c4aB54E28";
 
 window.onload = async function() {
       startup();
@@ -31,18 +32,17 @@ function addStyleFromAmount(_amount, messageId){
 
 async function initmetamask(){
     document.getElementById("message_box").innerHTML = "配信開始しました！";
-    //provider = await new ethers.providers.Web3Provider(window.ethereum);
-    //await provider.send("eth_requestAccounts", []);
-    //signer = await provider.getSigner();
-    //useraddress = await signer.getAddress();    
-    //useraddress = "0x7a6C738D8c6936A7b9EDcf11c3fF7284624AA876";
     const provider = await ethers.getDefaultProvider("rinkeby", {etherscan: "KAAQMZSEM8PAUDKX7BP26EAEM85A7SG5G6"});
     useraddress = document.getElementById("wallet_address_input").value;    
-    tmcontract = await new ethers.Contract(throwMoneyContract, abi, provider);
-    filter = tmcontract.filters.MoneySent(null, useraddress, null, null, null);
+
+    throwMoneyFactoryContract = await new ethers.Contract(throwMoneyFactoryAddress, abi_ThrowMoneyFactory, provider);
+    signerPool = await throwMoneyFactoryContract.getPool(useraddress);
+
+    PoolContract = await new ethers.Contract(signerPool, abi_ThrowMoneyPool, provider);
+    filter = PoolContract.filters.MoneySent(null, signerPool, null, null, null);
     chat_counter = 0;
 
-    tmcontract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
+    PoolContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amount) => {
 	    const chatId =  `chat_message_${ chat_counter }`;
 	    // 入金額によってスタイルを変更
             //const chatStyleSheet = addStyleFromAmount(_amount, messageId);
@@ -74,7 +74,7 @@ async function initmetamask(){
 	    document.getElementById("chat_box").appendChild(chat);
 
 	    // デバッグ用ログ
-            console.log(`I got ${ _amount } JPYC from ${ _alias } saying ${ _message }`);
+            console.log(`I got ${ ethers.utils.formatEther(_amount) } JPYC from ${ _alias } saying ${ _message }`);
     });
 }
 
