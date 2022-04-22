@@ -1,2 +1,0 @@
-//throwMoneyContract = "0xbC08676d1bDE04F351428Ef548Ce029c8Ff94F6C";
-throwMoneyContract = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
