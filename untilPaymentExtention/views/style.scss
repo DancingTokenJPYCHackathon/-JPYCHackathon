@@ -150,7 +150,8 @@ $border-radius: 4px;
     right: 1rem !important;
     bottom: 1rem !important;
     z-index: 100000 !important;
-    width: 48px;
+    width: 48px !important;
+    filter: drop-shadow(2px 2px 4px #bebebe);
     cursor: pointer !important;
 
     transition: all 0.2s;
