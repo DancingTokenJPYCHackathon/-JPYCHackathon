@@ -53,7 +53,7 @@ settings_html = `<div class="oshi-settings">
     </div>
 
     <!-- balance -->
-    <form class="balance l-section">
+    <form class="balance l-section" id="oshi-content" onsubmit="return false;">
         <div class="balance-item">
             <h4 class="balance-item__title">Wallet 残高</h4>
             <!-- 値段 -->
@@ -74,10 +74,16 @@ settings_html = `<div class="oshi-settings">
         <span class="tooltip-text">注意!<br>入金を行うと一定期間引き出しが行えません!</span>
         入金
     </button>
+
+        <!-- submit button -->
+        <button type="submit" class="oshi-btn tooltip" id="OSH-extract-button" onclick="extractPool()">
+        <span class="tooltip-text">注意!<br>出金を行うと一定期間引き出しが行えません!</span>
+        出金
+    </button>
     </form>
 
     <!-- main content -->
-    <form class="oshi-form l-section" id="oshi-content">
+    <form class="oshi-form l-section" id="oshi-content" onsubmit="return false;">
         <div class="oshi-form-item">
             <p class="oshi-form-item__label">OSHI相手のWalletアドレス</p>
             <input class="oshi-form-item__input" type="text" name="" id="OSH-wallet-address" required>

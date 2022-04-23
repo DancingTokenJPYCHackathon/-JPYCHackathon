@@ -9,7 +9,9 @@ const jpyc_on_rinkeby = "0xbD9c419003A36F187DAf1273FCe184e1341362C0";
 const nullAddress = "0x0000000000000000000000000000000000000000";
 //const throwMoneyFactoryAddress = "0xceb79363b0125819e172408376ea4Fad65c1ecb2";
 const throwMoneyFactoryAddress = "0x85841E40736Feb76de69DDA89e05760c4aB54E28";
+const multisignAddress = "0x864c410f7416C21b97183e2d4a8814f353A5D59F"; // ToDo 更新必須
 const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
+
 
 
 window.onload = async function() {
@@ -38,10 +40,10 @@ async function initmetamask(){
     if (signerPool === nullAddress) {
         document.getElementById("OSH-pool-button").textContent = "Poolを作成";
         document.getElementById("OSH-pool-button").setAttribute("onclick", "createPool()");
+    } else {
+        pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
+        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC";
     };
-
-    pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
-    document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC";
 }
 
 let a;
@@ -97,23 +99,14 @@ async function JPYCPool(){
     filter = JPYCContract.filters.Transfer(null, signerPool, null);
     JPYCContract.on(filter, async () => {
         pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
+        // event Transfer(address indexed from, address indexed to, uint256 value);
         // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC" 
+    
     //Wallet残高表示
-    provider = await new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = await provider.getSigner();
-    useraddress = await signer.getAddress();    
-    JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
     wallet_balance = await JPYCContract.balanceOf(useraddress) * 10e-19;
     document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
     });
-
-
-    // filter = PoolContract.filters.ErrorLog();
-    // PoolContract.on(filter, (_message) => {
-    //             console.log(`I got ${ _message }`);
-    //             document.getElementById("message-box").innerHTML = "送信失敗！";
 
 };
 
@@ -121,19 +114,27 @@ async function JPYCPool(){
 
 //Poolからの出金 未展開
 async function extractPool(){    
-    multisignAddress = "0x864c410f7416C21b97183e2d4a8814f353A5D59F" ;
-    multisignContract = new ethers.Contract(multisignAddress, abi_jpycmultisign, signer);
-    pricing2 = document.getElementById("superchat_price").value;
-    const extractprice = ethers.utils.parseUnits( pricing2.toString() , 18);
-    let options = { gasPrice: 10000000000 , gasLimit: 100000};
-    
-    
-    JPYCContract.transfer(  Pool2Address, poolprice2 , options ).catch((error) => {
-            a=error;
-            document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
-            });
-    };
+    multisignContract = new ethers.Contract(multisignAddress, abi_jpycmultisign, signer); // ToDo abi の更新必須
 
+    // 入力値の取得
+    OSH_wallet_address = document.getElementById("OSH-wallet-address").value;
+    OSH_throw_amountEther = document.getElementById("OSH-pool-amount").value;
+    OSH_throw_amountWei = ethers.utils.parseUnits(OSH_throw_amountEther.toString(), 18);
+
+    // 送金処理の申請
+    let option = { gasPrice: 10000000000 , gasLimit: 100000};    
+    let txID = await multisignContract.submitTransaction(OSH_wallet_address, OSH_throw_amountWei, option);
+    //出金額を approval 済み
+    console.log(txID)
+
+    /** 個々は別のページで実行する (まだ削除しないで！)
+    //承諾を得る 
+    await multisignContract.confirmTransaction(txID);
+    //(なんらかの実装で owner から承諾を得る)
+    //実行
+    await multisignContract.executeTransation(txID);
+    **/
+};
 
 
 
@@ -142,14 +143,14 @@ async function JPYCPayment(){
 
     // 投げ銭のスマコン
     const streamerAddress = document.getElementById("OSH-wallet-address").value;
-    const amountWei = ethers.utils.parseUnits(document.getElementById("OSH-throw-amount").value.toString(), 18);
-    let options = { gasPrice: 1000000 , gasLimit: 100000};
+    let amountWei = ethers.utils.parseUnits(document.getElementById("OSH-throw-amount").value.toString(), 18);
+    let options = { gasPrice: 10000000000, gasLimit: 100000};
  
-    const message  = document.getElementById("OSH-throw-message").value;
-    const nickname = document.getElementById("OSH-nickname").value;
+    let message  = document.getElementById("OSH-throw-message").value;
+    let nickname = document.getElementById("OSH-nickname").value;
 
     //イベント情報をフィルターして、Receiver に送る
-    filter = PoolContract.filters.MoneySent(null, null, null, null, null);
+    filter = PoolContract.filters.MoneySent(useraddress, streamerAddress, null, null, null);
     PoolContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amountWei) => {
             console.log(`I got ${ ethers.utils.formatEther(_amountWei) } JPYC from ${ _alias } saying ${ _message }`);
             document.getElementById("message-box").innerHTML = "送信成功！";
