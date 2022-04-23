@@ -57,12 +57,12 @@ settings_html = `<div class="oshi-settings">
         <div class="balance-item">
             <h4 class="balance-item__title">Wallet 残高</h4>
             <!-- 値段 -->
-            <span></span>
+            <span id ="wallet_balance" >- JPYC</span>
         </div>
         <div class="balance-item">
             <h4 class="balance-item__title">Pool 残高</h4>
             <!-- 値段 -->
-            <span></span>
+            <span id ="pool_balance">- JPYC</span>
         </div>
         <div class="balance-item">
             <p class="balance-item__label">いくら送りますか？</p>

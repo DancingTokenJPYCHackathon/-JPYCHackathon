@@ -30,8 +30,8 @@ async function initmetamask(){
     signer = await provider.getSigner();
     useraddress = await signer.getAddress();    
     JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
-    balance = await JPYCContract.balanceOf(useraddress) * 10e-19;
-    document.getElementById("message-box").innerHTML = document.getElementById("message-box").innerHTML + balance + "JPYC持っています";
+    wallet_balance = await JPYCContract.balanceOf(useraddress) * 10e-19;
+    document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
     
     throwMoneyFactoryContract = new ethers.Contract(throwMoneyFactoryAddress, abi_throwmoneyfactory, signer);
     signerPool = await throwMoneyFactoryContract.getPool(await signer.getAddress());
@@ -39,6 +39,9 @@ async function initmetamask(){
         document.getElementById("OSH-pool-button").textContent = "Poolを作成";
         document.getElementById("OSH-pool-button").setAttribute("onclick", "createPool()");
     };
+
+    pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
+    document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC";
 }
 
 let a;
@@ -77,32 +80,59 @@ async function JPYCPool(){
 
     poolAmountEther = document.getElementById("OSH-pool-amount").value;
     const poolAmountWei = ethers.utils.parseUnits(poolAmountEther.toString(), 18);
-    let options = { gasPrice: 10000000000 , gasLimit: 100000};
-    
+    let options = { gasPrice: 10000000000 , gasLimit: 100000};    
     JPYCContract.transfer(signerPool, poolAmountWei, options).catch((error) => {
-            a=error;
-            document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
-            });
-    // Update pool amount on DOM
-};
+        a=error;
+        document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+        });
 
-//入金ボタンを推した時に発生する動作
+    //POOL残高表示
+    filter = JPYCContract.filters.Transfer(signerPool, null, null);
+    JPYCContract.on(filter, async () => {
+        pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
+        // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
+        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"    
+    });
+
+    filter = JPYCContract.filters.Transfer(null, signerPool, null);
+    JPYCContract.on(filter, async () => {
+        pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19;
+        // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
+        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC" 
+    //Wallet残高表示
+    provider = await new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    signer = await provider.getSigner();
+    useraddress = await signer.getAddress();    
+    JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
+    wallet_balance = await JPYCContract.balanceOf(useraddress) * 10e-19;
+    document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
+    });
+
+
+    // filter = PoolContract.filters.ErrorLog();
+    // PoolContract.on(filter, (_message) => {
+    //             console.log(`I got ${ _message }`);
+    //             document.getElementById("message-box").innerHTML = "送信失敗！";
+
+};
 
   
 
-// //Poolからの出金 未展開
-// async function extractPool(){    
-//     Pool2Address = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8" ;
-//     Pool2Contract = new ethers.Contract(Pool2Address, abi_contract, signer);
-//     pricing2 = document.getElementById("superchat_price").value;
-//     const poolprice2 = ethers.utils.parseUnits( pricing2.toString() , 18);
-//     let options = { gasPrice: 10000000000 , gasLimit: 100000};
+//Poolからの出金 未展開
+async function extractPool(){    
+    multisignAddress = "0x864c410f7416C21b97183e2d4a8814f353A5D59F" ;
+    multisignContract = new ethers.Contract(multisignAddress, abi_jpycmultisign, signer);
+    pricing2 = document.getElementById("superchat_price").value;
+    const extractprice = ethers.utils.parseUnits( pricing2.toString() , 18);
+    let options = { gasPrice: 10000000000 , gasLimit: 100000};
     
-//     JPYCContract.transfer(  Pool2Address, poolprice2 , options ).catch((error) => {
-//             a=error;
-//             document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
-//             });
-//     };
+    
+    JPYCContract.transfer(  Pool2Address, poolprice2 , options ).catch((error) => {
+            a=error;
+            document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+            });
+    };
 
 
 
