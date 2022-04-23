@@ -53,7 +53,7 @@ settings_html = `<div class="oshi-settings">
     </div>
 
     <!-- balance -->
-    <section class="balance l-section">
+    <form class="balance l-section">
         <div class="balance-item">
             <h4 class="balance-item__title">Wallet 残高</h4>
             <!-- 値段 -->
@@ -65,15 +65,16 @@ settings_html = `<div class="oshi-settings">
             <span id ="pool_balance">- JPYC</span>
         </div>
         <div class="balance-item">
-            <p class="balance-item__label">いくら送りますか？</p>
-            <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="JPYC" required>
+            <p class="balance-item__label">Poolにいくら入金しますか？</p>
+            <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="値(JPYC)を入力" required>
         </div>
 
         <!-- submit button -->
-        <button class="balance-btn" id="OSH-pool-button" onclick="JPYCPool()">
-            入金
-        </button>
-    </section>
+        <button type="submit" class="oshi-btn tooltip" id="OSH-pool-button" onclick="JPYCPool()">
+        <span class="tooltip-text">注意!<br>入金を行うと一定期間引き出しが行えません!</span>
+        入金
+    </button>
+    </form>
 
     <!-- main content -->
     <form class="oshi-form l-section" id="oshi-content">
@@ -83,7 +84,7 @@ settings_html = `<div class="oshi-settings">
         </div>
         <div class="oshi-form-item">
             <p class="oshi-form-item__label">いくら送りますか？</p>
-            <input class="oshi-form-item__input" type="number" name="" id="OSH-throw-amount" placeholder="JPYC" required>
+            <input class="oshi-form-item__input" type="number" name="" id="OSH-throw-amount" placeholder="値(JPYC)を入力" required>
         </div>
         <div class="oshi-form-item">
             <p class="oshi-form-item__label">あなたのニックネーム</p>
@@ -103,7 +104,7 @@ settings_html = `<div class="oshi-settings">
         </div>
 
         <!-- submit button -->
-        <button class="oshi-btn" onclick="JPYCPayment()">
+        <button type="submit" class="oshi-btn" onclick="JPYCPayment()">
             OSHU !!
         </button>
 	<!-- message box (debug purposes only) -->
