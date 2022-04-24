@@ -30,7 +30,7 @@ async function initmetamask(){
     signer = await provider.getSigner();
     useraddress = await signer.getAddress();    
     JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
-    wallet_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)).toString().replace('.0', '');
+    wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
     document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
     
     throwMoneyFactoryContract = new ethers.Contract(throwMoneyFactoryAddress, abi_throwmoneyfactory, signer);
@@ -39,7 +39,7 @@ async function initmetamask(){
         document.getElementById("OSH-pool-button").textContent = "Poolを作成";
         document.getElementById("OSH-pool-button").setAttribute("onclick", "createPool()");
     } else {
-        pool_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)).toString().replace('.0', '');
+        pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC";
     };
 }
@@ -89,20 +89,20 @@ async function JPYCPool(){
     //POOL残高表示
     filter = JPYCContract.filters.Transfer(signerPool, null, null);
     JPYCContract.on(filter, async () => {
-        pool_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)).toString().replace('.0', '');
+        pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
         // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"    
     });
 
     filter = JPYCContract.filters.Transfer(null, signerPool, null);
     JPYCContract.on(filter, async () => {
-        pool_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)).toString().replace('.0', '');
+        pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
         // event Transfer(address indexed from, address indexed to, uint256 value);
         // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC" 
     
     //Wallet残高表示
-    wallet_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)).toString().replace('.0', '');
+    wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
     document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
     });
 
@@ -164,8 +164,8 @@ async function JPYCPayment(){
     
     filter = JPYCContract.filters.Transfer(signerPool, null, null);
     JPYCContract.on(filter, async () => {
-        pool_balance = ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)).toString().replace('.0', '');
-        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"    
+        pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
     });
 
     //SendJpyc
