@@ -7,9 +7,7 @@ let signerPool;
 
 const jpyc_on_rinkeby = "0xbD9c419003A36F187DAf1273FCe184e1341362C0";
 const nullAddress = "0x0000000000000000000000000000000000000000";
-//const throwMoneyFactoryAddress = "0xceb79363b0125819e172408376ea4Fad65c1ecb2";
-const throwMoneyFactoryAddress = "0x85841E40736Feb76de69DDA89e05760c4aB54E28";
-const multisignAddress = "0x864c410f7416C21b97183e2d4a8814f353A5D59F"; // ToDo 更新必須
+const throwMoneyFactoryAddress = "0x6E024a0d18daFf03177b961E392BdF2c4f03eC96";
 const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
 
 
@@ -114,16 +112,18 @@ async function JPYCPool(){
 
 //Poolからの出金 未展開
 async function extractPool(){    
-    multisignContract = new ethers.Contract(multisignAddress, abi_jpycmultisign, signer); // ToDo abi の更新必須
+    PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
 
     // 入力値の取得
-    OSH_wallet_address = document.getElementById("OSH-wallet-address").value;
     OSH_throw_amountEther = document.getElementById("OSH-pool-amount").value;
     OSH_throw_amountWei = ethers.utils.parseUnits(OSH_throw_amountEther.toString(), 18);
 
+    console.log(OSH_throw_amountEther);
+    console.log(OSH_throw_amountWei);
+
     // 送金処理の申請
     let option = { gasPrice: 10000000000 , gasLimit: 100000};    
-    let txID = await multisignContract.submitTransaction(OSH_wallet_address, OSH_throw_amountWei, option);
+    let txID = await PoolContract.submitWithdrawRequest(OSH_throw_amountWei, option);
     //出金額を approval 済み
     console.log(txID)
 

@@ -1,5 +1,16 @@
 abi_throwmoneyfactory = [
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_withdrawCAAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -17,7 +28,7 @@ abi_throwmoneyfactory = [
 		"name": "newThrowMoneyPool",
 		"outputs": [
 			{
-				"internalType": "contract ThrowMoneyPool",
+				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}
@@ -36,7 +47,7 @@ abi_throwmoneyfactory = [
 			},
 			{
 				"indexed": false,
-				"internalType": "contract ThrowMoneyPool",
+				"internalType": "address",
 				"name": "__pool_address",
 				"type": "address"
 			}
@@ -55,7 +66,7 @@ abi_throwmoneyfactory = [
 		"name": "getPool",
 		"outputs": [
 			{
-				"internalType": "contract ThrowMoneyPool",
+				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}

@@ -7,7 +7,51 @@ abi_contract = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_senderAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_senderAlias",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "emitMoneySent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_sender",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_throwMoneyFactoryAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_withdrawCAAddress",
+				"type": "address"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -17,7 +61,7 @@ abi_contract = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "_error_message",
+				"name": "__error_message",
 				"type": "string"
 			}
 		],
@@ -90,6 +134,25 @@ abi_contract = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_jpycAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "submitWithdrawRequest",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "getname",
 		"outputs": [
@@ -136,6 +199,32 @@ abi_contract = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "throwMoneyFactory",
+		"outputs": [
+			{
+				"internalType": "contract IThrowMoneyFactory",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawConfirmationAuthority",
+		"outputs": [
+			{
+				"internalType": "contract IWithdrawConfirmationAuthority",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
