@@ -76,8 +76,7 @@ settings_html = `<div class="oshi-settings">
     </button>
 
         <!-- submit button -->
-        <button type="submit" class="oshi-btn tooltip" id="OSH-extract-button" onclick="extractPool()">
-        <span class="tooltip-text">注意!<br>出金を行うと一定期間引き出しが行えません!</span>
+        <button type="submit" class="oshi-btn" id="OSH-extract-button" onclick="extractPool()" style="z-index:-9">
         出金
     </button>
     </form>
@@ -101,8 +100,8 @@ settings_html = `<div class="oshi-settings">
             <input class="oshi-form-item__input" type="text" name="" id="OSH-throw-message">
         </div>
         <div class="oshi-form-item">
-            <p class="oshi-form-item__label" id="">エフェクト</p>
-            <select class="oshi-form-item__input" name="" id="">
+            <p class="oshi-form-item__label" id="">エフェクト (Coming Soon...)</p>
+            <select class="oshi-form-item__input" name="" id="" style="opacity: 0.5; pointer-events: none">
                 <option value="a">キラキラ</option>
                 <option value="b">うさみみ</option>
                 <option value="c">NFT</option>
