@@ -3,7 +3,7 @@ let provider;
 let signer;
 let throwMoneyFactoryContract;
 
-const throwMoneyFactoryAddress = "0x85841E40736Feb76de69DDA89e05760c4aB54E28";
+const throwMoneyFactoryAddress = "0x6d837f431d7592F36e4b3146256eB301D017af4a";
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
 window.onload = async function() {

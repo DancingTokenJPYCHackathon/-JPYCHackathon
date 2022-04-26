@@ -38,6 +38,34 @@ abi_contract = [
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "_reciveAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_senderAlias",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "sendJpyc",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "_sender",
 				"type": "address"
 			},
@@ -108,49 +136,28 @@ abi_contract = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_reciveAddr",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_message",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_senderAlias",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "sendJpyc",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "uint256",
 				"name": "_jpycAmount",
 				"type": "uint256"
 			}
 		],
 		"name": "submitWithdrawRequest",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "__txId",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawRequestId",
+		"type": "event"
 	},
 	{
 		"inputs": [],

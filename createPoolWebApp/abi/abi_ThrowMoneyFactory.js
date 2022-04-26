@@ -1,5 +1,16 @@
 abi_ThrowMoneyFactory = [
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_withdrawCAAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{

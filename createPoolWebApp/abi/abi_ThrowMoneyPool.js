@@ -1,5 +1,68 @@
 abi_ThrowMoneyPool = [
 	{
+		"inputs": [],
+		"name": "approveJpycFromContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_senderAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_senderAlias",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "emitMoneySent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_reciveAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_senderAlias",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "sendJpyc",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -9,6 +72,11 @@ abi_ThrowMoneyPool = [
 			{
 				"internalType": "address",
 				"name": "_throwMoneyFactoryAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_withdrawCAAddress",
 				"type": "address"
 			}
 		],
@@ -66,39 +134,30 @@ abi_ThrowMoneyPool = [
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "approveJpycFromContract",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_jpycAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "submitWithdrawRequest",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
+		"anonymous": false,
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_senderAddr",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_message",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_senderAlias",
-				"type": "string"
-			},
-			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "_amount",
+				"name": "__txId",
 				"type": "uint256"
 			}
 		],
-		"name": "emitMoneySent",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "withdrawRequestId",
+		"type": "event"
 	},
 	{
 		"inputs": [],
@@ -153,39 +212,24 @@ abi_ThrowMoneyPool = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_reciveAddr",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_message",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_senderAlias",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "sendJpyc",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "throwMoneyFactory",
 		"outputs": [
 			{
 				"internalType": "contract IThrowMoneyFactory",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawConfirmationAuthority",
+		"outputs": [
+			{
+				"internalType": "contract IWithdrawConfirmationAuthority",
 				"name": "",
 				"type": "address"
 			}

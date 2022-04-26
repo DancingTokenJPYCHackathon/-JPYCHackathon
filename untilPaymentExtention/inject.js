@@ -65,8 +65,8 @@ settings_html = `<div class="oshi-settings">
             <span id ="pool_balance">- JPYC</span>
         </div>
         <div class="balance-item">
-            <p class="balance-item__label">Poolにいくら入金しますか？</p>
-            <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="値(JPYC)を入力" required>
+            <p class="balance-item__label">JPYC の移動額を指定してください</p>
+            <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="値 (JPYC) を入力" required min="0">
         </div>
 
         <!-- submit button -->
@@ -84,12 +84,12 @@ settings_html = `<div class="oshi-settings">
     <!-- main content -->
     <form class="oshi-form l-section" id="oshi-content" onsubmit="return false;">
         <div class="oshi-form-item">
-            <p class="oshi-form-item__label">OSHI相手のWalletアドレス</p>
+            <p class="oshi-form-item__label">OSHI 相手の Wallet アドレス</p>
             <input class="oshi-form-item__input" type="text" name="" id="OSH-wallet-address" required>
         </div>
         <div class="oshi-form-item">
             <p class="oshi-form-item__label">いくら送りますか？</p>
-            <input class="oshi-form-item__input" type="number" name="" id="OSH-throw-amount" placeholder="値(JPYC)を入力" required>
+            <input class="oshi-form-item__input" type="number" name="" id="OSH-throw-amount" placeholder="値 (JPYC) を入力" required min="0">
         </div>
         <div class="oshi-form-item">
             <p class="oshi-form-item__label">あなたのニックネーム</p>

@@ -4,10 +4,11 @@ let signer;
 let JPYCContract;
 let throwMoneyFactoryContract;
 let signerPool;
+let errorMessage;
 
 const jpyc_on_rinkeby = "0xbD9c419003A36F187DAf1273FCe184e1341362C0";
 const nullAddress = "0x0000000000000000000000000000000000000000";
-const throwMoneyFactoryAddress = "0x6E024a0d18daFf03177b961E392BdF2c4f03eC96";
+const throwMoneyFactoryAddress = "0x6d837f431d7592F36e4b3146256eB301D017af4a";
 const JPYCAddress = "0x7Bf4200567DC227B3db9c07c96106Ab5641Febb8";
 
 
@@ -30,21 +31,52 @@ async function initmetamask(){
     signer = await provider.getSigner();
     useraddress = await signer.getAddress();    
     JPYCContract = await new ethers.Contract(jpyc_on_rinkeby , abi_JPYC, signer );
+
+    // ウオレットの残高を取得
     wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
     document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
+
+    // プールからの送金を監視
+    _filter = JPYCContract.filters.Transfer(useraddress, null, null);
+    JPYCContract.on(filter, async () => {
+        _wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
+        document.getElementById("wallet_balance").innerHTML = _wallet_balance + " JPYC"; 
+    });
+
+    // プールへの送金を監視
+    _filter = JPYCContract.filters.Transfer(null, useraddress, null);
+    JPYCContract.on(filter, async () => {
+        _wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
+        document.getElementById("wallet_balance").innerHTML = _wallet_balance + " JPYC"; 
+    });
+
     
     throwMoneyFactoryContract = new ethers.Contract(throwMoneyFactoryAddress, abi_throwmoneyfactory, signer);
     signerPool = await throwMoneyFactoryContract.getPool(await signer.getAddress());
+
     if (signerPool === nullAddress) {
         document.getElementById("OSH-pool-button").textContent = "Poolを作成";
         document.getElementById("OSH-pool-button").setAttribute("onclick", "createPool()");
     } else {
         pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC";
+
+        // プールからの送金を監視
+        filter = JPYCContract.filters.Transfer(signerPool, null, null);
+        JPYCContract.on(filter, async () => {
+            pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+            document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
+        });
+
+        // プールへの送金を監視
+        filter = JPYCContract.filters.Transfer(null, signerPool, null);
+        JPYCContract.on(filter, async () => {
+            pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+            document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
+        });
     };
 }
 
-let a;
 
 //Pool作成
 async function createPool(){
@@ -56,6 +88,20 @@ async function createPool(){
             document.getElementById("OSH-pool-button").textContent = "入金する";
             document.getElementById("OSH-pool-button").setAttribute("onclick", "JPYCPool()");
         }
+
+        // プールからの送金を監視
+        _filter = JPYCContract.filters.Transfer(signerPool, null, null);
+        JPYCContract.on(filter, async () => {
+            pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+            document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
+        });
+
+        // プールへの送金を監視
+        _filter = JPYCContract.filters.Transfer(null, signerPool, null);
+        JPYCContract.on(filter, async () => {
+            pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+            document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
+        });
     });
 
     throwMoneyFactoryContract.newThrowMoneyPool();
@@ -64,13 +110,13 @@ async function createPool(){
 
 //RinkebyNetworkへ切り替え
 async function changeToMatic(){
-    document.getElementById("message-box").innerHTML = "Rinkeby Networkに切り替えましょう";
+    document.getElementById("message-box").innerHTML = "Rinkeby Network に切り替えましょう";
     let ethereum = window.ethereum;
         const data = [{
             chainId: '0x4',
         }]
     const tx = await ethereum.request({method: 'wallet_switchEthereumChain', params:data}).catch()
-    document.getElementById("message-box").innerHTML = "準備ができました。<br><br>"
+    document.getElementById("message-box").innerHTML = "Rinkeby Network に接続しました。<br><br>"
 }
 
 
@@ -86,6 +132,7 @@ async function JPYCPool(){
         document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
         });
 
+    /**
     //POOL残高表示
     filter = JPYCContract.filters.Transfer(signerPool, null, null);
     JPYCContract.on(filter, async () => {
@@ -97,15 +144,13 @@ async function JPYCPool(){
     filter = JPYCContract.filters.Transfer(null, signerPool, null);
     JPYCContract.on(filter, async () => {
         pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
-        // event Transfer(address indexed from, address indexed to, uint256 value);
-        // pool_balance = await JPYCContract.balanceOf(signerPool) * 10e-19 ;
         document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC" 
+    });
+    **/
     
     //Wallet残高表示
     wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
     document.getElementById("wallet_balance").innerHTML = wallet_balance + " JPYC";
-    });
-
 };
 
   
@@ -118,14 +163,10 @@ async function extractPool(){
     OSH_throw_amountEther = document.getElementById("OSH-pool-amount").value;
     OSH_throw_amountWei = ethers.utils.parseUnits(OSH_throw_amountEther.toString(), 18);
 
-    console.log(OSH_throw_amountEther);
-    console.log(OSH_throw_amountWei);
-
     // 送金処理の申請
-    let option = { gasPrice: 10000000000 , gasLimit: 100000};    
-    let txID = await PoolContract.submitWithdrawRequest(OSH_throw_amountWei, option);
+    let option = {gasPrice: 10000000000 , gasLimit: 1000000}; // 想定よりガス代が高かった
+    await PoolContract.submitWithdrawRequest(OSH_throw_amountWei, option);
     //出金額を approval 済み
-    console.log(txID)
 
     /** 個々は別のページで実行する (まだ削除しないで！)
     //承諾を得る 
@@ -144,7 +185,7 @@ async function JPYCPayment(){
     // 投げ銭のスマコン
     const streamerAddress = document.getElementById("OSH-wallet-address").value;
     let amountWei = ethers.utils.parseUnits(document.getElementById("OSH-throw-amount").value.toString(), 18);
-    let options = { gasPrice: 10000000000, gasLimit: 100000};
+    let options = { gasPrice: 10000000000, gasLimit: 1000000};
  
     let message  = document.getElementById("OSH-throw-message").value;
     let nickname = document.getElementById("OSH-nickname").value;
@@ -153,7 +194,6 @@ async function JPYCPayment(){
     filter = PoolContract.filters.MoneySent(useraddress, streamerAddress, null, null, null);
     PoolContract.on(filter, (_senderAddr, _reciveAddr, _message, _alias, _amountWei) => {
             console.log(`I got ${ ethers.utils.formatEther(_amountWei) } JPYC from ${ _alias } saying ${ _message }`);
-            document.getElementById("message-box").innerHTML = "送信成功！";
         }); 
 
     filter = PoolContract.filters.ErrorLog();
@@ -161,17 +201,19 @@ async function JPYCPayment(){
                 console.log(`I got ${ _message }`);
                 document.getElementById("message-box").innerHTML = "送信失敗！";
         }); 
-    
-    filter = JPYCContract.filters.Transfer(signerPool, null, null);
-    JPYCContract.on(filter, async () => {
-        pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
-        document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
-    });
+
+    /**
+        // プールからの送金を監視
+        filter = JPYCContract.filters.Transfer(signerPool, null, null);
+        JPYCContract.on(filter, async () => {
+            pool_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(signerPool)));
+            document.getElementById("pool_balance").innerHTML = pool_balance + " JPYC"; 
+        });
+    **/
 
     //SendJpyc
     PoolContract.sendJpyc(streamerAddress, message, nickname, amountWei, options).catch((error) => {
-        a=error;
-        document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
+        errorMessage = error;
+        //document.getElementById("message-box").innerHTML = error.code + "<br>" + error.message + "<br>" + error.stack + "<br>" + error.data + "<br>" + JSON.stringify(error);
     });
-    console.log("成功！")
 }
