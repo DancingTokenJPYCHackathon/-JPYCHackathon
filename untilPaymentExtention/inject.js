@@ -19,7 +19,7 @@ async function init() {
     document.body.appendChild(el4)
 
     const el6 = document.createElement("script")
-    el6.setAttribute("src", chrome.runtime.getURL("./abi/abi_contract.js"))
+    el6.setAttribute("src", chrome.runtime.getURL("./abi/abi_throwmoneypool.js"))
     document.body.appendChild(el6)
 
     const el8 = document.createElement("script")

@@ -136,7 +136,7 @@ async function changeToMatic(){
 
 //Poolへの入金動作    
 async function JPYCPool(){    
-    PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
+    PoolContract = new ethers.Contract(signerPool, abi_throwmoneypool, signer);
 
     poolAmountEther = document.getElementById("OSH-pool-amount").value;
     const poolAmountWei = ethers.utils.parseUnits(poolAmountEther.toString(), 18);
@@ -154,7 +154,7 @@ async function JPYCPool(){
 
 //Poolからの出金 未展開
 async function extractPool(){    
-    PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
+    PoolContract = new ethers.Contract(signerPool, abi_throwmoneypool, signer);
 
     // 入力値の取得
     OSH_throw_amountEther = document.getElementById("OSH-pool-amount").value;
@@ -177,7 +177,7 @@ async function extractPool(){
 
 
 async function JPYCPayment(){
-    PoolContract = new ethers.Contract(signerPool, abi_contract, signer);
+    PoolContract = new ethers.Contract(signerPool, abi_throwmoneypool, signer);
 
     // 投げ銭のスマコン
     const streamerAddress = document.getElementById("OSH-wallet-address").value;

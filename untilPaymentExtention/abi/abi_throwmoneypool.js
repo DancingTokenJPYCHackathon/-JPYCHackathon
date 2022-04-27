@@ -1,4 +1,4 @@
-abi_contract = [
+abi_throwmoneypool = [
 	{
 		"inputs": [],
 		"name": "approveJpycFromContract",
