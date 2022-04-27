@@ -69,16 +69,17 @@ settings_html = `<div class="oshi-settings">
             <input class="balance-item__input" type="number" name="" id="OSH-pool-amount" placeholder="値 (JPYC) を入力" required min="0">
         </div>
 
-        <!-- submit button -->
+        <!-- submit buttons -->
+        <div class="oshi-btns">
         <button type="submit" class="oshi-btn tooltip" id="OSH-pool-button" onclick="JPYCPool()">
-        <span class="tooltip-text">注意!<br>入金を行うと一定期間引き出しが行えません!</span>
-        入金
-    </button>
+        <span class="tooltip-text" id="OSH-pool-button-tooltip">注意!<br>入金を行うと一定期間引き出しが行えません!</span>
+        <span id="OSH-pool-button-text">入金</span>
+        </button>
 
-        <!-- submit button -->
-        <button type="submit" class="oshi-btn" id="OSH-extract-button" onclick="extractPool()" style="z-index:-9">
+        <button type="submit" class="oshi-btn" id="OSH-extract-button" onclick="extractPool()">
         出金
-    </button>
+        </button>
+        </div>
     </form>
 
     <!-- main content -->
@@ -109,11 +110,12 @@ settings_html = `<div class="oshi-settings">
         </div>
 
         <!-- submit button -->
-        <button type="submit" class="oshi-btn" onclick="JPYCPayment()">
+        <button type="submit" class="oshu-btn" onclick="JPYCPayment()">
             OSHU !!
         </button>
 	<!-- message box (debug purposes only) -->
-        <div id="message-box">
+        <div>
+        <span class="message-box-text" id="message-box"></span>
         </div>
     </form>
 </div>
