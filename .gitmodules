@@ -1,3 +1,6 @@
 [submodule "mobilePaymentWebApp"]
 	path = mobilePaymentWebApp
 	url = https://github.com/nagakei05/JPYCHackathon2nd.git
+[submodule "recipientWebApp"]
+	path = recipientWebApp
+	url = https://github.com/DancingTokenJPYCHackathon/dancingtokenjpychackathon.github.io.git
