@@ -1,9 +1,9 @@
 async function init() {
     // Add css to floating component
-    const link = document.createElement("link");
-    link.setAttribute("rel", "stylesheet");
-    link.setAttribute("href", chrome.runtime.getURL("./views/style.min.css"));
-    document.head.appendChild(link)
+    const linkStyleSheet = document.createElement("link");
+    linkStyleSheet.setAttribute("rel", "stylesheet");
+    linkStyleSheet.setAttribute("href", chrome.runtime.getURL("./views/style.min.css"));
+    document.head.appendChild(linkStyleSheet)
 
     // Inject our javascript to page
     const el2 = document.createElement("script")
