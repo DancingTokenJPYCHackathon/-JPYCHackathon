@@ -1,0 +1,3 @@
+[submodule "mobilePaymentWebApp"]
+	path = mobilePaymentWebApp
+	url = https://github.com/nagakei05/JPYCHackathon2nd.git
