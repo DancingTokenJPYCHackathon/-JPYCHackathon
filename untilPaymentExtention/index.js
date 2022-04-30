@@ -44,14 +44,14 @@ async function initmetamask(){
 
     // プールからの送金を監視
     _filter = JPYCContract.filters.Transfer(useraddress, null, null);
-    JPYCContract.on(filter, async () => {
+    JPYCContract.on(_filter, async () => {
         _wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
         document.getElementById("wallet_balance").innerHTML = _wallet_balance + " JPYC"; 
     });
 
     // プールへの送金を監視
     _filter = JPYCContract.filters.Transfer(null, useraddress, null);
-    JPYCContract.on(filter, async () => {
+    JPYCContract.on(_filter, async () => {
         _wallet_balance = Math.round(ethers.utils.formatEther(await JPYCContract.balanceOf(useraddress)));
         document.getElementById("wallet_balance").innerHTML = _wallet_balance + " JPYC"; 
     });
