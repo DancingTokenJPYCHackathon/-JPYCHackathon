@@ -140,8 +140,9 @@ async function JPYCPool(){
 
     poolAmountEther = document.getElementById("OSH-pool-amount").value;
     const poolAmountWei = ethers.utils.parseUnits(poolAmountEther.toString(), 18);
-    let options = { gasPrice: 10000000000 , gasLimit: 100000};    
-    JPYCContract.transfer(signerPool, poolAmountWei, options).catch((error) => {
+
+    //let options = { gasPrice: 10000000000 , gasLimit: 100000};    
+    JPYCContract.transfer(signerPool, poolAmountWei).catch((error) => {
         errorMessage = error;
         });
 
@@ -161,8 +162,8 @@ async function extractPool(){
     OSH_throw_amountWei = ethers.utils.parseUnits(OSH_throw_amountEther.toString(), 18);
 
     // 送金処理の申請
-    let option = {gasPrice: 10000000000 , gasLimit: 1000000}; // 想定よりガス代が高かった
-    await PoolContract.submitWithdrawRequest(OSH_throw_amountWei, option);
+    //let option = {gasPrice: 10000000000 , gasLimit: 1000000}; // 想定よりガス代が高かった
+    await PoolContract.submitWithdrawRequest(OSH_throw_amountWei);
     //出金額を approval 済み
 
     /** 個々は別のページで実行する (まだ削除しないで！)
@@ -182,7 +183,7 @@ async function JPYCPayment(){
     // 投げ銭のスマコン
     const streamerAddress = document.getElementById("OSH-wallet-address").value;
     let amountWei = ethers.utils.parseUnits(document.getElementById("OSH-throw-amount").value.toString(), 18);
-    let options = { gasPrice: 10000000000, gasLimit: 1000000};
+    //let options = { gasPrice: 10000000000, gasLimit: 100000000};
  
     let message  = document.getElementById("OSH-throw-message").value;
     let nickname = document.getElementById("OSH-nickname").value;
@@ -200,7 +201,7 @@ async function JPYCPayment(){
         }); 
 
     //SendJpyc
-    PoolContract.sendJpyc(streamerAddress, message, nickname, amountWei, options).catch((error) => {
+    PoolContract.sendJpyc(streamerAddress, message, nickname, amountWei).catch((error) => {
         errorMessage = error;
     });
 }
