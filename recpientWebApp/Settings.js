@@ -1,1 +1,0 @@
-throwMoneyContract = "0xbC08676d1bDE04F351428Ef548Ce029c8Ff94F6C";

@@ -1,15 +1,16 @@
 {
-    "name": "yuto_inject",
+    "name": "JPYC_inject",
     "version": "1.0",
     "manifest_version": 3,
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
-            "js": ["inject.js"]
+            "js": ["inject.js"],
+            "css": ["./views/style.min.css"]
         }
     ],
     "web_accessible_resources": [{
-      "resources": ["ether.js", "SETTING.js", "abi_JPYC.js", "index.js", "abi_contract.js", "smartcontract.js"],
+      "resources": ["ether.js", "abi/abi_JPYC.js", "abi/abi_throwmoneyfactory.js", "index.js", "abi/abi_throwmoneypool.js", "img/oshi-icon.png", "views/style.min.css"],
       "matches": ["<all_urls>"]
     }],
     "host_permissions": ["<all_urls>"]
